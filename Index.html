@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreame Art Studio | Kolawole Adedeji Israel</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 500: '#D4AF37', 600: '#AA8C2C' },
+                        royal: { 900: '#050505' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #050505; color: #f3f3f3; font-family: 'Raleway', sans-serif; overflow-x: hidden; }
+        
+        .artwork-card {
+            background: #000000;
+            border: 1px solid #1a1a1a; 
+            padding: 16px;
+            transition: all 0.4s ease;
+        }
+
+        .artwork-container {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            height: 650px; 
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .artwork-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            /* FORCE SHARPNESS */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            transform: translateZ(0);
+        }
+
+        .glass { background: rgba(0,0,0,0.96); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(212,175,55,0.3); }
+        
+        .btn-gold {
+            background: #D4AF37;
+            color: black;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover { background: white; transform: scale(1.02); }
+
+        .view-details-link {
+            color: #D4AF37;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            margin-top: 10px;
+            display: inline-block;
+            opacity: 0.8;
+        }
+        .view-details-link:hover { opacity: 1; color: #fff; }
+
+        #admin-panel {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.99);
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .share-btn {
+            font-size: 14px;
+            color: #666;
+            margin: 0 5px;
+            transition: color 0.3s;
+        }
+        .share-btn:hover { color: #D4AF37; }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav class="fixed w-full z-50 glass">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="font-heading text-xl font-bold tracking-[0.4em] text-gold-500 uppercase">Dreame Art</h1>
+            <div class="hidden md:flex gap-8 text-[10px] font-bold tracking-widest uppercase text-white/70">
+                <a href="#home" class="hover:text-gold-500 transition">Home</a>
+                <a href="#gallery" class="hover:text-gold-500 transition">Collection</a>
+                <button onclick="showAdmin()" class="hover:text-gold-500 transition">Owner Login</button>
+            </div>
+            <a href="https://wa.me/message/GWON4WELKNBMH1" target="_blank" class="btn-gold px-6 py-2 rounded text-[10px]">Inquire</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="home" class="relative h-screen flex items-center justify-center text-center px-6">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-black/80 z-10"></div>
+            <img src="https://i.ibb.co/Z57L3Bv/image.jpg" class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-20 max-w-5xl">
+            <div class="mb-8">
+                <span class="block text-white/90 tracking-[0.4em] uppercase text-[12px] md:text-[14px] font-bold mb-2">Welcome to Dreame Art Studio</span>
+                <span class="block text-gold-500 tracking-[0.2em] uppercase text-[10px] font-medium italic">Where precious stones meet creativity to reveal the soul</span>
+            </div>
+            <h2 class="font-heading text-4xl md:text-7xl mb-8 text-white font-bold uppercase tracking-widest">Kolawole Adedeji Israel</h2>
+            <p class="text-gray-400 text-sm md:text-lg mb-12 italic">"Each gemstone represents the uniqueness in every one of us."</p>
+            <button onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})" class="btn-gold px-12 py-4 text-xs">View Masterworks</button>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-20">
+                <h3 class="text-3xl text-white uppercase tracking-[0.5em] font-light mb-4">Original Artworks</h3>
+                <div class="h-px w-24 bg-gold-500 mx-auto"></div>
+            </div>
+            <div id="art-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-24 px-6 bg-[#080808]">
+        <div class="container mx-auto max-w-3xl text-center">
+            <h3 class="text-gold-500 font-bold text-xl uppercase tracking-[0.4em] mb-4">The Studio Journal</h3>
+            <div class="flex flex-col md:flex-row gap-0 max-w-lg mx-auto border border-white/10 rounded overflow-hidden">
+                <input type="email" id="newsletter-email" placeholder="Email Address" class="flex-1 bg-black px-6 py-4 text-white outline-none">
+                <button onclick="saveSubscriber()" class="bg-gold-500 text-black px-8 py-4 text-[10px] font-black uppercase tracking-widest">Join</button>
+            </div>
+            <p id="newsletter-msg" class="mt-4 text-[10px] font-bold text-gold-500 hidden uppercase">Subscribed Successfully.</p>
+        </div>
+    </section>
+
+    <!-- Admin Panel (Dashboard) -->
+    <div id="admin-panel">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-gold-500 text-2xl font-bold tracking-widest uppercase">Studio Dashboard</h2>
+                <button onclick="document.getElementById('admin-panel').style.display='none'" class="text-white bg-white/10 px-4 py-2 rounded">Exit Dashboard</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white/5 p-6 rounded border border-white/10">
+                    <h3 class="text-white mb-4 uppercase text-sm font-bold border-b border-gold-500 pb-2">Newsletter Subscribers</h3>
+                    <ul id="sub-list" class="text-xs text-gray-400 space-y-3"></ul>
+                </div>
+                <div class="bg-white/5 p-6 rounded border border-white/10">
+                    <h3 class="text-white mb-4 uppercase text-sm font-bold border-b border-gold-500 pb-2">Artwork Inquiries</h3>
+                    <ul id="order-list" class="text-xs text-gray-400 space-y-3"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black py-20 border-t border-white/5 px-6">
+        <div class="container mx-auto text-center">
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="text-gray-500 hover:text-gold-500 transition text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-500 hover:text-gold-500 transition text-xl"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-500 hover:text-gold-500 transition text-xl"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="text-gray-500 text-[10px] uppercase tracking-[0.3em] mb-4 font-bold">
+                Nigeria & Worldwide Distribution<br>
+                +234 816 577 1966 • adedejicrownades@gmail.com
+            </p>
+            <p class="text-gray-800 text-[9px] tracking-widest uppercase font-bold">
+                &copy; 2025 All Rights Reserved. Dreame Art Gallery | Kolawole Adedeji Israel.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Concierge Chat -->
+    <div id="ai-chat" class="fixed bottom-8 right-8 z-50 flex flex-col items-end">
+        <div id="chat-box" class="hidden glass w-80 md:w-96 h-[500px] mb-6 rounded-2xl flex flex-col overflow-hidden border border-white/10 shadow-2xl">
+            <div class="p-5 bg-gold-500 text-black font-black text-[10px] uppercase tracking-widest flex justify-between items-center">
+                <span>Studio Concierge</span>
+                <button onclick="toggleChat()"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chat-content" class="flex-1 overflow-y-auto p-6 space-y-4 text-xs bg-black/90">
+                <div class="bg-white/5 p-4 rounded border-l-2 border-gold-500 text-gray-300">
+                    Hello! I am your studio concierge. I can tell you about the artist's purpose, themes of the work, gemstone symbolism, or shipping details. How can I help today?
+                </div>
+            </div>
+            <div id="chat-loading" class="hidden px-6 py-2 text-[10px] italic text-gold-500 font-bold uppercase tracking-widest">Typing...</div>
+            <div class="p-4 bg-black flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask about the themes or artist..." class="flex-1 bg-white/5 border border-white/10 rounded px-4 py-3 text-xs outline-none text-white" onkeydown="if(event.key==='Enter') sendChat()">
+                <button onclick="sendChat()" class="bg-gold-500 text-black px-4 rounded transition active:scale-95"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="bg-gold-500 text-black w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-all">
+            <i class="fas fa-gem text-xl"></i>
+        </button>
+    </div>
+
+    <script>
+        const apiKey = ""; 
+        const artworks = [
+            { title: "Emerald Soul", price: 1200, gems: "Emerald", code: "Z57L3Bv" },
+            { title: "Nature embrace a love letter from humanity", price: 1200, gems: "Emerald", code: "5hggTnwZ" },
+            { title: "another day of dialogue", price: 500, gems: "Ruby", code: "mFG5zYS9" },
+            { title: "to my precious one", price: 500, gems: "Emerald", code: "Jws1z0Bg" },
+            { title: "The mockingbird", price: 1200, gems: "Ruby", code: "7tY47W0V" },
+            { title: "Nostalgia", price: 1300, gems: "Ruby", code: "NdvZqdtB" },
+            { title: "Where, why solace?", price: 1200, gems: "Ruby", code: "8LW0g5Sp" },
+            { title: "In our fathers shoe", price: 1300, gems: "Pearls & Gold", code: "Y4LnGCVr" },
+            { title: "The enchanted reflection", price: 800, gems: "Diamond", code: "mC0PKFDs" },
+            { title: "Chronicles of love", price: 900, gems: "Blue Topaz", code: "N60mYsvM" },
+            { title: "Once upon a time", price: 1200, gems: "Ruby", code: "RGsxCwVQ" },
+            { title: "The tale of companionship", price: 1100, gems: "Ruby", code: "0j8BRvwb" },
+            { title: "Timeless gems", price: 1100, gems: "Emerald", code: "0R1Z0b2v" },
+            { title: "The iron collector", price: 1300, gems: "Ruby", code: "Y452d0ZT" },
+            { title: "Chronicles of love (II)", price: 1300, gems: "Ruby", code: "k6kLjK5y" },
+            { title: "Serenity in the dept", price: 1000, gems: "Aquamarine", code: "7dhVPXhG" },
+            { title: "The file of history", price: 1200, gems: "Amethyst", code: "gb2khJQx" },
+            { title: "Upon me", price: 400, gems: "Ruby", code: "HpFy63ML" },
+            { title: "Behind the Royal Regalia", price: 800, gems: "Diamonds & Rubies", code: "5hGtSGjv" }
+        ];
+
+        let subscribers = JSON.parse(localStorage.getItem('dreame_subs') || '[]');
+        let inquiries = JSON.parse(localStorage.getItem('dreame_inquiries') || '[]');
+
+        function loadGallery() {
+            const container = document.getElementById('art-container');
+            artworks.forEach(art => {
+                const card = document.createElement('div');
+                card.className = "artwork-card flex flex-col";
+                card.innerHTML = `
+                    <div class="artwork-container">
+                        <img src="https://i.ibb.co/${art.code}/image.jpg" alt="${art.title}" class="artwork-image">
+                    </div>
+                    <div class="pt-6 text-center">
+                        <h4 class="text-white text-[11px] tracking-widest uppercase mb-3 font-bold">${art.title}</h4>
+                        <div class="flex justify-between items-center mb-4 px-2">
+                            <span class="text-gold-500 text-[9px] uppercase font-bold tracking-widest">${art.gems}</span>
+                            <span class="text-white text-lg font-bold tracking-tighter">$${art.price.toLocaleString()}</span>
+                        </div>
+                        <button onclick="makeInquiry('${art.title}')" class="w-full btn-gold py-3 text-[10px] mb-2">Studio Inquiry</button>
+                        <div class="flex justify-center items-center gap-4 mt-2">
+                           <a href="https://ibb.co/${art.code}" target="_blank" class="view-details-link">High-Res Details</a>
+                           <div class="flex gap-2">
+                             <a href="https://www.facebook.com/sharer/sharer.php?u=https://ibb.co/${art.code}" target="_blank" class="share-btn"><i class="fab fa-facebook"></i></a>
+                             <a href="https://twitter.com/intent/tweet?url=https://ibb.co/${art.code}&text=Masterpiece by Kolawole Adedeji Israel" target="_blank" class="share-btn"><i class="fab fa-twitter"></i></a>
+                           </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function makeInquiry(title) {
+            inquiries.push({title, date: new Date().toLocaleString()});
+            localStorage.setItem('dreame_inquiries', JSON.stringify(inquiries));
+            window.open(`https://wa.me/message/GWON4WELKNBMH1?text=Inquiry for the masterpiece: ${title}`, '_blank');
+        }
+
+        function saveSubscriber() {
+            const email = document.getElementById('newsletter-email').value;
+            if(email.includes('@')) {
+                subscribers.push({email, date: new Date().toLocaleString()});
+                localStorage.setItem('dreame_subs', JSON.stringify(subscribers));
+                document.getElementById('newsletter-msg').classList.remove('hidden');
+                document.getElementById('newsletter-email').value = '';
+            }
+        }
+
+        function showAdmin() {
+            const pass = prompt("Enter Studio Admin Password:");
+            if(pass === "crownlaugh") {
+                document.getElementById('admin-panel').style.display = 'block';
+                const subList = document.getElementById('sub-list');
+                const orderList = document.getElementById('order-list');
+                subList.innerHTML = subscribers.length ? subscribers.map(s => `<li><span class="text-gold-500 font-bold">EMAIL:</span> ${s.email} <br><span class="opacity-40 text-[9px]">${s.date}</span></li>`).join('') : 'No subscribers yet.';
+                orderList.innerHTML = inquiries.length ? inquiries.map(i => `<li><span class="text-gold-500 font-bold">INQUIRY:</span> ${i.title} <br><span class="opacity-40 text-[9px]">${i.date}</span></li>`).join('') : 'No inquiries yet.';
+            } else {
+                alert("Access Denied.");
+            }
+        }
+
+        function toggleChat() { document.getElementById('chat-box').classList.toggle('hidden'); }
+
+        async function sendChat() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-content');
+            const loading = document.getElementById('chat-loading');
+            const userMsg = input.value.trim();
+            if(!userMsg) return;
+
+            box.innerHTML += `<div class="bg-white/5 p-3 rounded text-white ml-8 text-right font-medium">${userMsg}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+            loading.classList.remove('hidden');
+
+            const systemPrompt = `You are the Dreame Art Concierge for artist Kolawole Adedeji Israel. 
+            RULES:
+            1. If the user says 'Hello', 'Hi', 'Hey', or any greeting, respond with a warm, sophisticated welcome to the studio.
+            2. ARTIST: Kolawole Adedeji Israel.
+            3. PURPOSE: To reveal the uniqueness in everyone. He uses gemstones to show the 'gem' inside humans that makes them special.
+            4. THEMES: Duality of love and hatred, societal events, and the human condition. High fashion meets deep commentary.
+            5. GEMSTONES: They are metaphors for human value and the individual soul.
+            6. SHIPPING: The studio handles worldwide distribution from Nigeria.
+            7. PRICING: Masterworks are valued between $400 and $1,300.
+            8. Be concise, intelligent, and elegant. Never say you are an AI. You are the Studio Concierge. Do NOT search Google. Use this info only.`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userMsg }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "I am currently at the studio service desk. How may I help you with Kolawole's work?";
+                
+                loading.classList.add('hidden');
+                box.innerHTML += `<div class="bg-gold-500/10 p-3 rounded text-gray-300 mr-8 border-l border-gold-500 font-medium">${text}</div>`;
+                box.scrollTop = box.scrollHeight;
+            } catch (error) {
+                loading.classList.add('hidden');
+                box.innerHTML += `<div class="text-red-400 text-[10px]">Studio lines busy. Please try again.</div>`;
+            }
+        }
+
+        window.onload = loadGallery;
+    </script>
+</body>
+</html>
